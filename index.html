@@ -118,6 +118,12 @@ h1 { font-weight: 700; font-size: clamp(2.4rem, 5.2vw, 4.4rem); line-height: 1.0
 .how-foot { margin-top: 36px; display: flex; justify-content: space-between; align-items: center; gap: 20px 32px; flex-wrap: wrap; }
 .how-foot p { margin: 0; color: var(--faint); font-size: .92rem; }
 
+.calc { padding: 96px 0; }
+.calc-card { display: grid; grid-template-columns: minmax(0, 1.3fr) auto; gap: 24px 40px; align-items: center; padding: 40px 44px; border-radius: var(--r); border: 1px solid rgba(242, 193, 78, .35); background: linear-gradient(120deg, rgba(242, 193, 78, .10), rgba(242, 193, 78, .02) 60%), var(--panel); }
+.calc-card h2 { font-size: clamp(1.6rem, 3vw, 2.3rem); max-width: 22ch; }
+.calc-card .lead { margin-top: 14px; }
+@media (max-width: 760px) { .calc-card { grid-template-columns: 1fr; padding: 30px 24px; } .calc-card .btn { width: 100%; } }
+
 /* chamada final */
 .final { position: relative; padding: 0; overflow: hidden; border-top: 1px solid var(--line); }
 .final img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%; }
@@ -292,6 +298,21 @@ footer .wrap { padding: 40px 0 calc(40px + env(safe-area-inset-bottom, 0px)); di
   </div>
 </section>
 
+<section class="calc" id="calculadora">
+  <div class="wrap">
+    <div class="calc-card rv">
+      <div>
+        <p class="label">Calculadora gratuita</p>
+        <h2>Quanto o seu corpo <em>gasta por dia?</em></h2>
+        <p class="lead">Em 2 minutos você descobre a sua estimativa de gasto calórico e o que pode estar travando o seu resultado.</p>
+      </div>
+      <a class="btn" href="/calculadora/">Fazer a calculadora
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
 <section class="final">
   <img src="assets/marlon-corrida.jpg" alt="" loading="lazy">
   <div class="wrap">
@@ -312,6 +333,7 @@ footer .wrap { padding: 40px 0 calc(40px + env(safe-area-inset-bottom, 0px)); di
       <a href="https://www.tiktok.com/@marlonjuniornutri" target="_blank" rel="noopener">TikTok</a>
       <a href="https://wa.me/5561995746311?text=Oi%20Marlon%2C%20quero%20falar%20sobre%20palestras%20e%20parcerias." target="_blank" rel="noopener">Palestras e parcerias</a>
       <a href="mailto:marlonjuniornutri@gmail.com">marlonjuniornutri@gmail.com</a>
+      <a href="/privacidade/">Privacidade</a>
     </nav>
     <div class="legal">© <span id="y">2026</span> Marlon Júnior · CRN 16533<br>Marlon Junior Nutricionista LTDA · CNPJ 59.261.253/0001-61</div>
   </div>

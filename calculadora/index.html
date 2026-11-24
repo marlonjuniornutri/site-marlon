@@ -1,0 +1,528 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Calculadora de gasto calórico · Marlon Júnior</title>
+<meta name="description" content="Descubra em 2 minutos quanto o seu corpo gasta por dia e o que pode estar travando o seu resultado. Calculadora gratuita do nutricionista Marlon Júnior, CRN 16533.">
+<meta property="og:title" content="Quanto o seu corpo gasta por dia?">
+<meta property="og:description" content="Calculadora gratuita do nutricionista Marlon Júnior.">
+<meta name="theme-color" content="#2b2b2b">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23262626'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-family='Roboto,Helvetica,Arial,sans-serif' font-weight='700' font-size='34' fill='%23F2C14E'%3EM%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+<style>
+/* Layout: uma coluna estreita, uma pergunta por tela, barra de progresso fina no topo.
+   Visual único escuro, no mesmo clima dos posts: preto, cinza e dourado, tudo em Roboto. */
+:root {
+  --bg: #2b2b2b;
+  --surface: #353535;
+  --ink: #f4f4f2;
+  --muted: #b8b8b3;
+  --line: #4a4a48;
+  --olive: #f2c14e;
+  --olive-ink: #111111;
+  --olive-soft: #4a4129;
+  --sand: #c9a23f;
+  --sand-soft: #33312b;
+  --danger: #f08a7a;
+  --serif: "Roboto", system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  --sans: "Roboto", system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { min-height: 100%; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 32px;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 540px; margin: 0 auto; display: flex; flex-direction: column; min-height: 100vh; min-height: 100dvh; }
+header.top { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 20px 14px; }
+.brand { font-family: var(--serif); font-size: 15px; font-weight: 500; letter-spacing: 0.32em; color: var(--olive); }
+.step-count { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); font-variant-numeric: tabular-nums; }
+.progress { height: 3px; background: var(--line); border-radius: 3px; overflow: hidden; }
+.progress > i { display: block; height: 100%; width: 0; background: var(--olive); transition: width .35s ease; }
+main { flex: 1; padding-block: 36px 24px; }
+.screen { display: flex; flex-direction: column; gap: 22px; animation: rise .35s ease both; }
+@keyframes rise { from { opacity: .001; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .screen { animation: none; } .progress > i { transition: none; } }
+.lead { font-size: 14px; color: var(--muted); }
+.bridge { font-size: 14px; color: var(--olive); background: var(--olive-soft); padding: 10px 14px; border-radius: 10px; }
+h1, h2 { font-family: var(--serif); font-weight: 500; line-height: 1.18; letter-spacing: -0.01em; margin: 0; text-wrap: balance; color: var(--ink); }
+h1 { font-size: clamp(30px, 7.4vw, 40px); }
+h2 { font-size: clamp(23px, 5.6vw, 30px); }
+p { margin: 0; }
+.body-text { font-size: 16px; color: var(--ink); max-width: 62ch; }
+form, .outro { display: flex; flex-direction: column; gap: 14px; }
+textarea {
+  width: 100%; font: inherit; font-size: 16px; color: var(--ink); background: var(--surface);
+  border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; resize: vertical; min-height: 96px;
+}
+textarea:focus-visible { outline: 2px solid var(--olive); outline-offset: 2px; }
+textarea[aria-invalid="true"] { border-color: var(--danger); }
+.options { display: flex; flex-direction: column; gap: 10px; }
+.opt {
+  appearance: none; width: 100%; text-align: left; font: inherit; font-size: 16px; color: var(--ink);
+  background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 15px 16px;
+  cursor: pointer; transition: border-color .15s, background .15s;
+}
+.opt:hover { border-color: var(--olive); }
+.opt[aria-pressed="true"] { border-color: var(--olive); background: var(--olive-soft); }
+.opt:focus-visible, .btn:focus-visible, input:focus-visible, .back:focus-visible, .check input:focus-visible, a:focus-visible { outline: 2px solid var(--olive); outline-offset: 2px; }
+.fields { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.field.full { grid-column: 1 / -1; }
+label.lbl { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.input-box { position: relative; }
+input[type="text"], input[type="tel"], input[type="number"] {
+  width: 100%; font: inherit; font-size: 18px; color: var(--ink); background: var(--surface);
+  border: 1px solid var(--line); border-radius: 12px; padding: 14px 14px; font-variant-numeric: tabular-nums;
+}
+input[type="number"] { padding-right: 40px; -moz-appearance: textfield; }
+input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.unit { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); font-size: 13px; color: var(--muted); pointer-events: none; }
+input[aria-invalid="true"] { border-color: var(--danger); }
+.error { font-size: 14px; color: var(--danger); min-height: 1.4em; }
+.check { display: flex; gap: 12px; align-items: flex-start; font-size: 14px; color: var(--ink); cursor: pointer; }
+.check input { width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--olive); flex: none; }
+.small-link { font-size: 13px; color: var(--muted); }
+.small-link a { color: var(--olive); }
+.actions { display: flex; gap: 10px; align-items: center; }
+.btn {
+  appearance: none; border: 0; font: inherit; font-size: 16px; font-weight: 500; cursor: pointer;
+  background: var(--olive); color: var(--olive-ink); padding: 15px 22px; border-radius: 999px; text-decoration: none;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 52px;
+}
+.btn.block { width: 100%; }
+.btn.ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+.btn[disabled] { opacity: .45; cursor: not-allowed; }
+.back { appearance: none; background: none; border: 0; font: inherit; font-size: 14px; color: var(--muted); cursor: pointer; padding: 8px 0; }
+.back:hover { color: var(--ink); }
+
+/* Resultado */
+.kcal-card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 22px 20px; display: flex; flex-direction: column; gap: 10px; }
+.kcal-eyebrow { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.kcal { font-family: var(--serif); font-size: clamp(38px, 10vw, 52px); font-weight: 700; line-height: 1; color: var(--olive); font-variant-numeric: lining-nums tabular-nums; }
+.kcal small { font-family: var(--sans); font-size: 15px; color: var(--muted); font-weight: 400; margin-left: 4px; }
+.scale { position: relative; height: 8px; border-radius: 8px; background: var(--line); margin-top: 6px; }
+.scale > i { position: absolute; top: 0; bottom: 0; border-radius: 8px; background: var(--sand); }
+.scale-labels { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.note { font-size: 14px; color: var(--muted); }
+.method { display: flex; flex-direction: column; gap: 14px; padding: 4px 2px 0; }
+.steps { margin: 0; display: flex; flex-direction: column; gap: 12px; }
+.steps > div { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 12px; row-gap: 2px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+.steps dt { font-size: 15px; font-weight: 500; color: var(--ink); }
+.steps dd { margin: 0; font-size: 15px; color: var(--olive); font-weight: 600; font-variant-numeric: tabular-nums; text-align: right; }
+.steps p { grid-column: 1 / -1; font-size: 13px; color: var(--muted); }
+.steps sup, .refs { font-size: 12px; }
+.refs { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; color: var(--muted); line-height: 1.45; overflow-wrap: anywhere; }
+.refs a { color: var(--olive); }
+.pain { display: flex; flex-direction: column; gap: 14px; background: var(--sand-soft); border: 1px solid var(--olive-soft); border-radius: 16px; padding: 22px 20px; }
+.includes { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.includes li { position: relative; padding-left: 22px; font-size: 15px; color: var(--ink); }
+.includes li::before { content: ""; position: absolute; left: 2px; top: .55em; width: 8px; height: 8px; border-radius: 50%; background: var(--olive); }
+.profile { display: flex; flex-direction: column; gap: 10px; padding-top: 4px; }
+.tag { align-self: flex-start; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--olive); background: var(--olive-soft); padding: 5px 10px; border-radius: 999px; }
+.divider { height: 1px; background: var(--line); }
+.invite { display: flex; flex-direction: column; gap: 14px; }
+.proto a { color: var(--muted); }
+.brand { text-decoration: none; }
+.proto { font-size: 12px; color: var(--muted); text-align: center; padding-block: 8px 0; }
+@media (max-width: 420px) {
+  .fields { grid-template-columns: 1fr 1fr; }
+  .field.age { grid-column: 1 / -1; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="/">ESSÊNCIA</a>
+    <span class="step-count" id="stepCount"></span>
+  </header>
+  <div class="progress" aria-hidden="true"><i id="bar"></i></div>
+  <main id="app" aria-live="polite"></main>
+  <p class="proto"><a href="/">Marlon Júnior · Nutricionista · CRN 16533</a> · <a href="/privacidade/" target="_blank" rel="noopener">Política de privacidade</a></p>
+</div>
+
+<script>
+(function () {
+  // Número do WhatsApp do Marlon, só dígitos com DDI e DDD (ex.: 5561999999999). Vazio = abre o WhatsApp sem destinatário.
+  var WHATSAPP = '5561995746311';
+  var INSTAGRAM = 'https://www.instagram.com/marlonjuniornutri/';
+  // Endereço do app da Planilha Google (Apps Script). Vazio = não envia nada.
+  var PLANILHA_URL = 'https://script.google.com/macros/s/AKfycbyaANMn3MdAzZDxiDIh21o7f4g4KK2WnFXlYm3YMquoGjLORW2ZD0My6upYQ1bzOr28fw/exec';
+
+  var A = {}; // respostas
+  var history = [];
+  var current = 'abertura';
+  var app = document.getElementById('app');
+
+  var OPT = {
+    objetivo: ['Emagrecer', 'Manter meu peso', 'Ganhar massa muscular', 'Melhorar minha relação com a comida'],
+    sexo: ['Masculino', 'Feminino'],
+    rotina: ['Passo a maior parte do tempo na cadeira', 'Fico em pé ou me movimento boa parte do tempo', 'Tenho trabalho físico pesado'],
+    treino: ['Nenhuma', '1 a 2', '3 a 5', '6 a 7'],
+    momento: ['No fim de semana', 'À noite', 'Em dias de ansiedade, cansaço ou estresse', 'Quando a rotina aperta', 'Em festas, eventos e encontros', 'Quando fico muitas horas sem comer', 'Quando como fora ou peço delivery', 'Beliscando ao longo do dia', 'Outro'],
+    deslize: ['Volto na próxima refeição', 'Deixo pra recomeçar na segunda', 'Tento compensar comendo menos ou treinando mais', 'Largo tudo por um tempo'],
+    acompanhamento: ['Faço', 'Já fiz, hoje não', 'Nunca fiz']
+  };
+
+  // Telas em que a última opção é "Outro" e abre um campo para a pessoa detalhar
+  var OUTRO = { momento: 'Me conta como costuma ser' };
+
+  // linha = rotina, coluna = treino
+  var FATOR = [
+    [1.2, 1.375, 1.55, 1.725],
+    [1.375, 1.55, 1.725, 1.725],
+    [1.55, 1.725, 1.725, 1.9]
+  ];
+
+  var ORDER = ['abertura', 'nome', 'objetivo', 'sexo', 'medidas', 'rotina', 'treino', 'momento', 'deslize', 'acompanhamento', 'contato', 'resultado'];
+
+  var PERFIS = {
+    compensacao: {
+      nome: 'Compensação',
+      titulo: 'Você tenta pagar o que comeu',
+      texto: '{nome}, repara numa coisa: quando sai do plano, você tenta compensar comendo menos ou treinando mais. Na hora, parece que resolve. Só que isso costuma aumentar a fome e o cansaço, e o ciclo volta. Esse ponto merece mais atenção do que o número aí em cima.'
+    },
+    dias: {
+      nome: 'Dias pesados',
+      titulo: 'Seu plano trava quando o dia pesa',
+      texto: '{nome}, pelas suas respostas, a alimentação sai do lugar quando vêm a ansiedade, o cansaço ou o estresse. Agora pensa comigo: esses são os dias que mais pedem preparo. Um plano bom precisa contar com eles desde o começo.'
+    },
+    tudo: {
+      nome: 'Tudo ou nada',
+      titulo: 'Ou tá 100%, ou desandou',
+      texto: '{nome}, o que aparece nas suas respostas é isso: saiu um pouco do plano, parece que a semana já foi. Um deslize sozinho pesa pouco, e o tempo parado depois dele costuma custar bem mais. O ponto aqui é aprender a voltar mais rápido.'
+    },
+    vida: {
+      nome: 'Vida real',
+      titulo: 'Seu plano não aguenta a vida real',
+      texto: '{nome}, pelo que você me contou, as coisas andam enquanto a semana ajuda. Quando ela aperta, o plano começa a falhar. Isso costuma mostrar que ele foi pensado pra uma semana perfeita, e ninguém vive assim. Na prática, ele precisa caber na sua semana de verdade.'
+    }
+  };
+
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; });
+  }
+  function nome() { return esc(primeiroNome(A.nome || '')); }
+  function primeiroNome(n) { return n.trim().split(/\s+/)[0] || ''; }
+  function fmt(n) { return Math.round(n).toLocaleString('pt-BR'); }
+  function num(v) { return parseFloat(String(v).replace(',', '.')); }
+
+  function calcular(a) {
+    var tmb = 10 * a.peso + 6.25 * a.altura - 5 * a.idade + (a.sexo === 0 ? 5 : -161);
+    var fator = FATOR[a.rotina][a.treino];
+    var get = tmb * fator;
+    return { tmb: tmb, fator: fator, get: get, min: Math.round(get * 0.9 / 50) * 50, max: Math.round(get * 1.1 / 50) * 50 };
+  }
+
+  function perfil(a) {
+    if (a.deslize === 2) return 'compensacao';
+    if (a.momento === 2) return 'dias';
+    if (a.deslize === 1 || a.deslize === 3) return 'tudo';
+    return 'vida';
+  }
+
+  function setProgress(id) {
+    var i = ORDER.indexOf(id);
+    var total = ORDER.length - 1; // a abertura não conta
+    var bar = document.getElementById('bar');
+    var count = document.getElementById('stepCount');
+    if (id === 'abertura' || id === 'menor') { bar.style.width = '0%'; count.textContent = ''; return; }
+    if (id === 'resultado') { bar.style.width = '100%'; count.textContent = 'Resultado'; return; }
+    bar.style.width = Math.round((i / total) * 100) + '%';
+    count.textContent = i + ' de ' + (total - 1);
+  }
+
+  function go(id, push) {
+    if (push !== false && current && current !== id) history.push(current);
+    current = id;
+    setProgress(id);
+    app.innerHTML = '';
+    var s = document.createElement('section');
+    s.className = 'screen';
+    s.innerHTML = SCREENS[id]();
+    app.appendChild(s);
+    if (BIND[id]) BIND[id](s);
+    var focusable = s.querySelector('input, .opt, .btn');
+    if (focusable && id !== 'resultado' && id !== 'abertura') { try { focusable.focus({ preventScroll: true }); } catch (e) {} }
+    window.scrollTo(0, 0);
+  }
+
+  function back() {
+    var prev = history.pop();
+    if (prev) go(prev, false);
+  }
+
+  function backBtn() { return '<div><button type="button" class="back" data-back>← Voltar</button></div>'; }
+
+  function choice(key, pergunta, extraTop) {
+    return function () {
+      var opts = OPT[key].map(function (o, i) {
+        return '<button type="button" class="opt" data-i="' + i + '" aria-pressed="' + (A[key] === i) + '">' + esc(o) + '</button>';
+      }).join('');
+      var outro = '';
+      if (OUTRO[key]) {
+        var open = A[key] === OPT[key].length - 1;
+        outro = '<div class="outro"' + (open ? '' : ' hidden') + '><label class="lbl" for="in-outro-' + key + '">' + OUTRO[key] + '</label>' +
+          '<textarea id="in-outro-' + key + '" rows="3" maxlength="300">' + esc(A[key + 'Outro'] || '') + '</textarea>' +
+          '<p class="error" data-outro-err></p><button type="button" class="btn block" data-outro-go>Continuar</button></div>';
+      }
+      return backBtn() + (extraTop || '') + '<h2>' + pergunta() + '</h2><div class="options" role="group">' + opts + '</div>' + outro;
+    };
+  }
+
+  function bindChoice(key, next) {
+    return function (s) {
+      var box = s.querySelector('.outro');
+      var last = OPT[key].length - 1;
+      function advance() { go(typeof next === 'function' ? next() : next); }
+      s.querySelectorAll('.opt').forEach(function (b) {
+        b.addEventListener('click', function () {
+          A[key] = +b.dataset.i;
+          s.querySelectorAll('.opt').forEach(function (x) { x.setAttribute('aria-pressed', x === b); });
+          if (box && A[key] === last) {
+            box.hidden = false;
+            var t = box.querySelector('textarea');
+            try { t.focus(); } catch (e) {}
+            return;
+          }
+          if (box) box.hidden = true;
+          setTimeout(advance, 160);
+        });
+      });
+      if (box) box.querySelector('[data-outro-go]').addEventListener('click', function () {
+        var t = box.querySelector('textarea');
+        var v = t.value.trim();
+        if (v.length < 3) { box.querySelector('[data-outro-err]').textContent = 'Escreve um pouquinho pra eu entender.'; t.setAttribute('aria-invalid', 'true'); return; }
+        A[key + 'Outro'] = v;
+        advance();
+      });
+    };
+  }
+
+  var SCREENS = {
+    abertura: function () {
+      return '<h1>Quanto o seu corpo gasta por dia?</h1>' +
+        '<p class="body-text">Olha, essa conta leva uns 2 minutos. No final, você recebe uma estimativa de quanto seu corpo gasta por dia e uma leitura do que pode estar travando seu resultado. Antes de mostrar, vou pedir seu WhatsApp pra gente continuar essa conversa, se fizer sentido pra você.</p>' +
+        '<p class="lead">Marlon Junior · Nutricionista · CRN1 16533</p>' +
+        '<div><button type="button" class="btn block" id="start">Começar</button></div>';
+    },
+    nome: function () {
+      return backBtn() + '<h2>Primeiro, como posso te chamar?</h2>' +
+        '<form id="f" novalidate><div class="field full"><label class="lbl" for="in-nome">Seu nome</label>' +
+        '<input type="text" id="in-nome" autocomplete="given-name" maxlength="40" value="' + esc(A.nome || '') + '"></div>' +
+        '<p class="error" id="err"></p><button type="submit" class="btn block">Continuar</button></form>';
+    },
+    objetivo: choice('objetivo', function () { return 'Prazer, ' + nome() + '. O que você mais quer resolver agora?'; }),
+    sexo: choice('sexo', function () { return 'Qual o seu sexo?'; }),
+    medidas: function () {
+      return backBtn() + '<h2>Agora os números da conta.</h2>' +
+        '<form id="f" novalidate><div class="fields">' +
+        field('idade', 'Idade', 'anos', A.idade, 'age') +
+        field('peso', 'Peso', 'kg', A.peso) +
+        field('altura', 'Altura', 'cm', A.altura) +
+        '</div><p class="error" id="err"></p><button type="submit" class="btn block">Continuar</button></form>';
+    },
+    rotina: choice('rotina', function () { return 'Como é o seu dia, fora o treino?'; }),
+    treino: choice('treino', function () { return 'Quantas vezes por semana você treina?'; }),
+    momento: choice('momento', function () { return 'Onde sua alimentação costuma sair do lugar?'; },
+      '<p class="bridge">Pronto, a conta já tá feita. Agora vou te perguntar o que ela não consegue medir.</p>'),
+    deslize: choice('deslize', function () { return 'E quando isso acontece, o que vem depois?'; }),
+    acompanhamento: choice('acompanhamento', function () { return 'Hoje você faz acompanhamento com nutricionista?'; }),
+    contato: function () {
+      var faz = A.acompanhamento === 0;
+      var consent = faz
+        ? 'Autorizo o uso das minhas respostas para gerar este resultado.'
+        : 'Autorizo o uso das minhas respostas para gerar este resultado e o contato do Marlon pelo WhatsApp.';
+      return backBtn() +
+        '<h2>' + nome() + ', sua estimativa tá pronta.</h2>' +
+        (faz ? '' : '<p class="body-text">Me passa seu WhatsApp pra gente continuar essa conversa, se fizer sentido pra você.</p>') +
+        '<form id="f" novalidate>' +
+        (faz ? '' : '<div class="field full"><label class="lbl" for="in-whats">WhatsApp com DDD</label><input type="tel" id="in-whats" autocomplete="tel-national" inputmode="tel" placeholder="(61) 99999-9999" value="' + esc(A.whats || '') + '"></div>') +
+        '<label class="check" for="in-consent"><input type="checkbox" id="in-consent"' + (A.consent ? ' checked' : '') + '><span>' + consent + '</span></label>' +
+        '<p class="small-link"><a href="/privacidade/" target="_blank" rel="noopener">Política de privacidade</a></p>' +
+        '<p class="error" id="err"></p><button type="submit" class="btn block">Ver meu resultado</button></form>';
+    },
+    resultado: function () {
+      var c = calcular(A);
+      var p = PERFIS[perfil(A)];
+      var n = nome();
+      // régua de 1.000 a 4.000 kcal para situar a faixa
+      var lo = 1000, hi = 4000;
+      var l = Math.max(0, Math.min(100, (c.min - lo) / (hi - lo) * 100));
+      var r = Math.max(0, Math.min(100, (c.max - lo) / (hi - lo) * 100));
+      var inv = convite(p);
+      return '<div class="kcal-card">' +
+          '<span class="kcal-eyebrow">Gasto estimado por dia</span>' +
+          '<h2>' + n + ', seu corpo gasta em torno de</h2>' +
+          '<div class="kcal">' + fmt(c.min) + ' a ' + fmt(c.max) + '<small>kcal</small></div>' +
+          '<div class="scale" aria-hidden="true"><i style="left:' + l + '%;width:' + Math.max(2, r - l) + '%"></i></div>' +
+          '<div class="scale-labels" aria-hidden="true"><span>1.000</span><span>2.500</span><span>4.000</span></div>' +
+          '<p class="note">Essa conta é uma estimativa. Ela mostra quanto você gasta, e quanto comer depende do seu objetivo, da sua rotina e do seu histórico.</p>' +
+        '</div>' +
+        '<div class="method">' +
+          '<span class="kcal-eyebrow">Como essa conta foi feita</span>' +
+          '<dl class="steps">' +
+            '<div><dt>Taxa metabólica basal</dt><dd>' + fmt(c.tmb) + ' kcal</dd><p>Equação de Mifflin-St Jeor, com seu sexo, idade, peso e altura.<sup>1,2</sup></p></div>' +
+            '<div><dt>Fator de atividade</dt><dd>× ' + c.fator.toLocaleString('pt-BR') + '</dd><p>Definido pela sua rotina e pela frequência dos seus treinos.<sup>3</sup></p></div>' +
+            '<div><dt>Gasto total estimado</dt><dd>' + fmt(c.get) + ' kcal</dd><p>Mostrado numa faixa de 10% para menos e para mais, porque toda equação tem margem de erro.</p></div>' +
+          '</dl>' +
+          '<ol class="refs">' +
+            '<li>Mifflin MD, St Jeor ST, Hill LA, Scott BJ, Daugherty SA, Koh YO. A new predictive equation for resting energy expenditure in healthy individuals. <em>Am J Clin Nutr</em>. 1990;51(2):241-7. <a href="https://pubmed.ncbi.nlm.nih.gov/2305711/" target="_blank" rel="noopener">PubMed</a></li>' +
+            '<li>Frankenfield D, Roth-Yousey L, Compher C. Comparison of predictive equations for resting metabolic rate in healthy nonobese and obese adults: a systematic review. <em>J Am Diet Assoc</em>. 2005;105(5):775-89. <a href="https://pure.psu.edu/en/publications/comparison-of-predictive-equations-for-resting-metabolic-rate-in-/" target="_blank" rel="noopener">Resumo</a></li>' +
+            '<li>FAO, OMS, UNU. <em>Human energy requirements</em>: report of a Joint FAO/WHO/UNU Expert Consultation. Roma: FAO; 2004. Food and Nutrition Technical Report Series, 1. <a href="https://www.fao.org/4/y5686e/y5686e00.htm" target="_blank" rel="noopener">FAO</a></li>' +
+          '</ol>' +
+        '</div>' +
+        '<div class="profile"><span class="tag">' + p.nome + '</span><h2>' + p.titulo + '</h2>' +
+          '<p class="body-text">' + p.texto.replace('{nome}', n) + '</p></div>' +
+        (A.acompanhamento === 0 ? '' : dor()) +
+        '<div class="divider"></div>' +
+        '<div class="invite"><p class="body-text">' + inv.texto + '</p>' + inv.botao + '</div>' +
+        '<div class="actions"><button type="button" class="btn ghost block" id="restart">Refazer o teste</button></div>';
+    },
+    menor: function () {
+      return backBtn() + '<h2>' + nome() + ', pra quem tem menos de 18 anos eu prefiro não passar um número automático.</h2>' +
+        '<p class="body-text">Nessa fase o corpo ainda tá crescendo, e o melhor é ver isso com um nutricionista, junto com a sua família.</p>' +
+        '<div><button type="button" class="btn ghost block" id="restart">Voltar ao início</button></div>';
+    }
+  };
+
+  function field(id, label, unit, val, cls) {
+    return '<div class="field ' + (cls || '') + '"><label class="lbl" for="in-' + id + '">' + label + '</label>' +
+      '<div class="input-box"><input type="number" inputmode="decimal" id="in-' + id + '" value="' + (val != null ? esc(String(val).replace('.', ',')) : '') + '"><span class="unit">' + unit + '</span></div></div>';
+  }
+
+  var MOMENTO_FRASE = ['no fim de semana', 'à noite', 'nos dias de ansiedade, cansaço ou estresse', 'quando a rotina aperta', 'em festas, eventos e encontros', 'quando você passa muitas horas sem comer', 'quando você come fora ou pede delivery', 'quando você belisca ao longo do dia', 'no momento que você me descreveu'];
+  var DESLIZE_FRASE = ['e mesmo voltando rápido, isso continua se repetindo', 'e a tendência é deixar pra recomeçar na segunda', 'e a resposta é tentar compensar comendo menos ou treinando mais', 'e a tendência é largar tudo por um tempo'];
+
+  function dor() {
+    var n = nome();
+    var so = A.sexo === 0 ? 'sozinho' : 'sozinha';
+    return '<div class="pain">' +
+      '<h2>Se a conta resolvesse, você já teria resolvido</h2>' +
+      '<p class="body-text">' + n + ', informação sobre calorias tá em todo lugar, e mesmo assim o resultado não fica. Repara no que você me contou: sua alimentação sai do lugar ' + MOMENTO_FRASE[A.momento] + ', ' + DESLIZE_FRASE[A.deslize] + '.</p>' +
+      '<p class="body-text">Isso não se resolve com mais uma dieta. Enquanto esse padrão continuar, qualquer plano novo tende a terminar no mesmo lugar, só que com mais cansaço e menos confiança no processo.</p>' +
+      '<p class="body-text">É exatamente aí que eu trabalho. Eu já estive desse lado, com o peso e com as tentativas que não duravam. Hoje eu monto com você um plano que cabe na sua semana real e acompanho de perto, pra você não ficar ' + so + ' quando o dia apertar. Mais de 2.000 pessoas já passaram pelo meu método.</p>' +
+      '<ul class="includes">' +
+        '<li>Primeira consulta de cerca de 1h30, com mapeamento completo da sua rotina</li>' +
+        '<li>Plano estratégico e flexível, ajustado sempre que precisar</li>' +
+        '<li>Check-ins semanais e acesso direto a mim pelo WhatsApp</li>' +
+        '<li>Comunidade exclusiva com outros pacientes</li>' +
+      '</ul>' +
+    '</div>';
+  }
+
+  function waLink(p) {
+    var msg = 'Oi, Marlon! Fiz a calculadora e meu resultado foi ' + p.nome + '.';
+    return 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(msg);
+  }
+
+  function convite(p) {
+    var ac = A.acompanhamento;
+    if (ac === 0) return {
+      texto: 'Leva esse resultado pra sua próxima consulta. Ele pode ajudar vocês a ajustar o plano.',
+      botao: '<a class="btn block" href="' + INSTAGRAM + '" target="_blank" rel="noopener">Seguir no Instagram</a>'
+    };
+    var texto = ac === 1
+      ? 'Se você já teve acompanhamento e parou, vale entender o que não funcionou antes de começar de novo. Se fizer sentido, me chama no WhatsApp e me conta como foi.'
+      : 'Se isso fez sentido pra você, me chama no WhatsApp e me conta um pouco da sua rotina. A gente vê se o acompanhamento combina com o seu momento.';
+    return { texto: texto, botao: '<a class="btn block" href="' + waLink(p) + '" target="_blank" rel="noopener">Falar com o Marlon</a>' };
+  }
+
+  function enviar() {
+    if (!PLANILHA_URL) return;
+    var c = calcular(A);
+    var dados = {
+      nome: A.nome, whatsapp: A.whats || '', objetivo: OPT.objetivo[A.objetivo], sexo: OPT.sexo[A.sexo],
+      idade: A.idade, peso: A.peso, altura: A.altura, rotina: OPT.rotina[A.rotina], treino: OPT.treino[A.treino],
+      momento: OPT.momento[A.momento], momentoOutro: A.momento === OPT.momento.length - 1 ? (A.momentoOutro || '') : '',
+      deslize: OPT.deslize[A.deslize], acompanhamento: OPT.acompanhamento[A.acompanhamento], perfil: PERFIS[perfil(A)].nome,
+      tmb: Math.round(c.tmb), fator: c.fator, gasto: Math.round(c.get), faixaMin: c.min, faixaMax: c.max, consentimento: true
+    };
+    try {
+      fetch(PLANILHA_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(dados) }).catch(function () {});
+    } catch (e) {}
+  }
+
+  function restart() { A = {}; history = []; go('abertura', false); }
+
+  var BIND = {
+    abertura: function (s) { s.querySelector('#start').addEventListener('click', function () { go('nome'); }); },
+    nome: function (s) {
+      s.querySelector('#f').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var v = s.querySelector('#in-nome').value.trim();
+        if (v.length < 2) { s.querySelector('#err').textContent = 'Escreve seu nome pra eu saber como te chamar.'; s.querySelector('#in-nome').setAttribute('aria-invalid', 'true'); return; }
+        A.nome = v; go('objetivo');
+      });
+    },
+    objetivo: bindChoice('objetivo', 'sexo'),
+    sexo: bindChoice('sexo', 'medidas'),
+    medidas: function (s) {
+      s.querySelector('#f').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var err = s.querySelector('#err');
+        var idade = num(s.querySelector('#in-idade').value);
+        var peso = num(s.querySelector('#in-peso').value);
+        var altura = num(s.querySelector('#in-altura').value);
+        s.querySelectorAll('input').forEach(function (i) { i.removeAttribute('aria-invalid'); });
+        function bad(id, msg) { s.querySelector('#in-' + id).setAttribute('aria-invalid', 'true'); err.textContent = msg; }
+        if (!(idade >= 1 && idade <= 90)) return bad('idade', 'Confere a idade: use um número até 90 anos.');
+        if (!(peso >= 35 && peso <= 300)) return bad('peso', 'Confere o peso: use um valor entre 35 e 300 kg.');
+        if (!(altura >= 120 && altura <= 230)) return bad('altura', 'Confere a altura em centímetros, entre 120 e 230 (ex.: 165).');
+        A.idade = Math.floor(idade); A.peso = peso; A.altura = altura;
+        if (A.idade < 18) { go('menor'); return; }
+        go('rotina');
+      });
+    },
+    rotina: bindChoice('rotina', 'treino'),
+    treino: bindChoice('treino', 'momento'),
+    momento: bindChoice('momento', 'deslize'),
+    deslize: bindChoice('deslize', 'acompanhamento'),
+    acompanhamento: bindChoice('acompanhamento', 'contato'),
+    contato: function (s) {
+      var w = s.querySelector('#in-whats');
+      if (w) w.addEventListener('input', function () {
+        var d = w.value.replace(/\D/g, '').slice(0, 11);
+        var out = d;
+        if (d.length > 2) out = '(' + d.slice(0, 2) + ') ' + d.slice(2);
+        if (d.length > 7) out = '(' + d.slice(0, 2) + ') ' + d.slice(2, d.length - 4) + '-' + d.slice(-4);
+        w.value = out;
+      });
+      s.querySelector('#f').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var err = s.querySelector('#err');
+        if (w) {
+          var d = w.value.replace(/\D/g, '');
+          if (d.length < 10 || d.length > 11) { w.setAttribute('aria-invalid', 'true'); err.textContent = 'Confere o número: DDD e mais 8 ou 9 dígitos.'; return; }
+          A.whats = w.value;
+        }
+        if (!s.querySelector('#in-consent').checked) { err.textContent = 'Pra mostrar o resultado, preciso da sua autorização aqui em cima.'; return; }
+        A.consent = true;
+        enviar();
+        go('resultado');
+      });
+    },
+    resultado: function (s) { s.querySelector('#restart').addEventListener('click', restart); },
+    menor: function (s) { s.querySelector('#restart').addEventListener('click', restart); }
+  };
+
+  app.addEventListener('click', function (e) {
+    if (e.target.closest('[data-back]')) back();
+  });
+
+  window.__calc = { calcular: calcular, perfil: perfil };
+  go('abertura', false);
+})();
+</script>
+
+</body>
+</html>
