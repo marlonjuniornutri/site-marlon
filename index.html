@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Marlon Júnior · Nutricionista · CRN 16533</title>
+<meta name="description" content="Você não falhou nas dietas. Você só nunca teve o acompanhamento certo. Acompanhamento Essência, online e presencial, com Marlon Júnior, nutricionista CRN 16533.">
+<meta property="og:title" content="Marlon Júnior · Nutricionista">
+<meta property="og:description" content="Emagrecimento para quem já tentou de tudo. Acompanhamento Essência, online e presencial.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://marlonjuniornutri.com/assets/marlon-portrait.jpg">
+<meta name="theme-color" content="#262626">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23262626'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-family='Roboto,Helvetica,Arial,sans-serif' font-weight='700' font-size='34' fill='%23F2C14E'%3EM%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap">
+<style>
+/* Visual: grafite, cinza e dourado, tudo em Roboto, no mesmo clima dos posts e da calculadora.
+   Ordem: promessa, história do Marlon, prova (resultados), como funciona, chamada final. */
+:root {
+  --bg: #262626;
+  --bg-2: #2f2f2f;
+  --panel: #353535;
+  --line: #444442;
+  --line-hi: #5c5c59;
+  --ink: #f4f4f2;
+  --soft: #c2c2bd;
+  --faint: #8f8f8a;
+  --gold: #f2c14e;
+  --gold-soft: rgba(242, 193, 78, .12);
+  --on-gold: #151515;
+  --r: 16px;
+  --sans: "Roboto", system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  --ease: cubic-bezier(.2, .7, .2, 1);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+img { max-width: 100%; height: auto; display: block; }
+a { color: inherit; text-decoration: none; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; border-radius: 6px; }
+.wrap { width: min(1160px, 100% - 40px); margin-inline: auto; }
+
+/* topo */
+.top { position: sticky; top: 0; z-index: 40; background: rgba(38, 38, 38, .86); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
+.top .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; gap: 20px; }
+.brand { font-weight: 700; font-size: 1.08rem; letter-spacing: -.01em; white-space: nowrap; }
+.brand span { color: var(--gold); font-weight: 500; }
+.top-cta { display: inline-flex; align-items: center; gap: 9px; font-size: .85rem; font-weight: 500; padding: 10px 16px; border: 1px solid var(--line-hi); border-radius: 999px; transition: background .3s, color .3s, border-color .3s; white-space: nowrap; }
+.top-cta svg { width: 16px; height: 16px; }
+.top-cta:hover { background: var(--gold); color: var(--on-gold); border-color: var(--gold); }
+
+/* comuns */
+.label { display: flex; gap: 12px; align-items: center; font-size: .74rem; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); margin: 0 0 20px; }
+.label::before { content: ""; width: 28px; height: 1px; background: var(--gold); flex: none; }
+h1, h2, h3 { text-wrap: balance; }
+h2 { font-weight: 700; font-size: clamp(1.9rem, 3.8vw, 3rem); line-height: 1.08; letter-spacing: -.025em; margin: 0; max-width: 20ch; }
+h1 em, h2 em { font-style: normal; color: var(--gold); }
+.lead { max-width: 48ch; color: var(--soft); font-size: 1.06rem; margin: 0; }
+.lead strong { color: var(--ink); font-weight: 500; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 12px; background: var(--gold); color: var(--on-gold); padding: 16px 26px; border-radius: 999px; font-weight: 700; font-size: .95rem; transition: transform .5s var(--ease), background .3s; box-shadow: 0 16px 36px -18px rgba(242, 193, 78, .7); }
+.btn svg { width: 18px; height: 18px; flex: none; transition: transform .5s var(--ease); }
+.btn:hover { transform: translateY(-2px); background: #f7cd68; }
+.btn:hover svg { transform: translateX(4px); }
+section { padding: 104px 0; }
+section.alt { background: var(--bg-2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+
+/* hero */
+.hero { position: relative; overflow: hidden; padding: 0; border-bottom: 1px solid var(--line); }
+.hero::before { content: ""; position: absolute; inset: 0; background: radial-gradient(50% 60% at 74% 62%, rgba(242, 193, 78, .10), transparent 70%); pointer-events: none; }
+.hero .wrap { position: relative; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: 32px; align-items: end; min-height: min(calc(100svh - 64px), 820px); }
+.hero-copy { padding: 80px 0; min-width: 0; }
+.eyebrow { font-size: .74rem; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; color: var(--soft); margin: 0; display: flex; gap: 12px; align-items: center; }
+.eyebrow::before { content: ""; width: 28px; height: 1px; background: var(--gold); }
+h1 { font-weight: 700; font-size: clamp(2.4rem, 5.2vw, 4.4rem); line-height: 1.04; letter-spacing: -.03em; margin: 24px 0; }
+.hero .btn { margin-top: 34px; }
+.proof { display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 26px 0 0; padding: 0; list-style: none; font-size: .9rem; color: var(--soft); }
+.proof li { display: flex; align-items: center; gap: 8px; }
+.proof b { color: var(--gold); font-weight: 700; }
+.hero-fig { position: relative; margin: 0; height: min(76vh, 740px); display: flex; align-items: flex-end; justify-content: center; min-width: 0; }
+.ring { position: absolute; left: 50%; bottom: 14%; width: min(520px, 96%); aspect-ratio: 1; transform: translateX(-50%); border-radius: 50%; border: 1px solid rgba(242, 193, 78, .55); }
+.ring::before { content: ""; position: absolute; inset: -11%; border-radius: 50%; border: 1px solid rgba(242, 193, 78, .18); }
+.ring::after { content: ""; position: absolute; inset: 8%; border-radius: 50%; background: radial-gradient(circle, rgba(242, 193, 78, .16), transparent 66%); }
+.hero-fig img { position: relative; height: 100%; width: auto; object-fit: contain; object-position: bottom; filter: drop-shadow(0 30px 40px rgba(0, 0, 0, .45)); }
+
+/* resultados */
+.sec-head { display: flex; justify-content: space-between; align-items: end; gap: 32px; margin-bottom: 44px; }
+.sec-head p { max-width: 34ch; color: var(--soft); margin: 0 0 6px; }
+.gallery { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.shot { margin: 0; position: relative; overflow: hidden; border-radius: var(--r); border: 1px solid var(--line); background: var(--panel); }
+.shot img { width: 100%; aspect-ratio: 1206 / 1000; object-fit: cover; transition: transform 1.2s var(--ease); }
+.shot:hover img { transform: scale(1.03); }
+.shot figcaption { position: absolute; inset: auto 0 0 0; display: grid; grid-template-columns: 1fr 1fr; padding: 28px 14px 12px; font-size: .7rem; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: #fff; background: linear-gradient(transparent, rgba(0, 0, 0, .7)); }
+.shot figcaption span:last-child { color: var(--gold); padding-left: 14px; }
+.swipe { display: none; margin: 14px 0 0; font-size: .82rem; color: var(--faint); }
+.after-gallery { margin-top: 40px; display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap; }
+.after-gallery p { margin: 0; color: var(--soft); max-width: 46ch; }
+
+/* história */
+.story .wrap { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 72px; align-items: center; }
+.story figure { margin: 0; position: relative; border-radius: var(--r); overflow: hidden; border: 1px solid var(--line); max-width: 460px; }
+.story figure img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+.story figcaption { position: absolute; inset: auto 0 0 0; display: grid; grid-template-columns: 1fr 1fr; padding: 28px 16px 14px; font-size: .72rem; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: #fff; background: linear-gradient(transparent, rgba(0, 0, 0, .75)); }
+.story figcaption span:last-child { color: var(--gold); padding-left: 16px; }
+.story .lead { margin-top: 22px; }
+.story .lead + .lead { margin-top: 14px; }
+.sign { margin: 28px 0 0; font-weight: 500; color: var(--gold); }
+
+/* como funciona */
+.how-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 72px; align-items: end; margin-bottom: 48px; }
+.how-head .lead { margin-bottom: 6px; }
+.steps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; counter-reset: s; }
+.steps li { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); padding: 24px 22px 26px; }
+.steps li::before { counter-increment: s; content: counter(s); width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; background: var(--gold-soft); color: var(--gold); font-weight: 700; margin-bottom: 18px; }
+.steps h3 { margin: 0 0 8px; font-weight: 700; font-size: 1.12rem; letter-spacing: -.01em; line-height: 1.25; }
+.steps p { margin: 0; color: var(--soft); font-size: .95rem; }
+.how-foot { margin-top: 36px; display: flex; justify-content: space-between; align-items: center; gap: 20px 32px; flex-wrap: wrap; }
+.how-foot p { margin: 0; color: var(--faint); font-size: .92rem; }
+
+/* chamada final */
+.final { position: relative; padding: 0; overflow: hidden; border-top: 1px solid var(--line); }
+.final img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%; }
+.final::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(20, 20, 20, .92) 0%, rgba(20, 20, 20, .72) 45%, rgba(20, 20, 20, .25) 100%); }
+.final .wrap { position: relative; z-index: 1; padding: 128px 0; }
+.final h2 { max-width: 16ch; }
+.final .lead { margin-top: 20px; color: #dcdcd6; }
+.final .btn { margin-top: 32px; }
+
+/* rodapé */
+footer { border-top: 1px solid var(--line); }
+footer .wrap { padding: 40px 0 calc(40px + env(safe-area-inset-bottom, 0px)); display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px 40px; align-items: start; }
+.foot-links { display: flex; flex-wrap: wrap; gap: 10px 26px; font-size: .95rem; }
+.foot-links a { color: var(--soft); border-bottom: 1px solid transparent; transition: color .3s, border-color .3s; }
+.foot-links a:hover { color: var(--ink); border-color: var(--gold); }
+.legal { font-size: .74rem; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); text-align: right; line-height: 1.8; }
+
+/* botão flutuante no celular */
+.float { position: fixed; left: max(16px, env(safe-area-inset-left, 0px)); right: max(16px, env(safe-area-inset-right, 0px)); bottom: calc(16px + env(safe-area-inset-bottom, 0px)); z-index: 45; display: none; opacity: 0; transform: translateY(24px); transition: opacity .5s var(--ease), transform .5s var(--ease); pointer-events: none; }
+.float.on { opacity: 1; transform: none; pointer-events: auto; }
+.float .btn { width: 100%; box-shadow: 0 18px 44px -12px rgba(0, 0, 0, .7); }
+
+/* movimento */
+@keyframes rise { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+.hero-copy > * { animation: rise 1s var(--ease) both; }
+.hero-copy > :nth-child(2) { animation-delay: .1s; }
+.hero-copy > :nth-child(3) { animation-delay: .2s; }
+.hero-copy > :nth-child(4) { animation-delay: .3s; }
+.hero-copy > :nth-child(5) { animation-delay: .4s; }
+.hero-fig img { animation: rise 1.3s var(--ease) .15s both; }
+.rv { transition: opacity .9s var(--ease), transform .9s var(--ease); }
+.js .rv:not(.in) { opacity: 0; transform: translateY(20px); }
+@media (prefers-reduced-motion: reduce) {
+  .hero-copy > *, .hero-fig img { animation: none; }
+  .rv { transition: none; }
+  .js .rv:not(.in) { opacity: 1; transform: none; }
+  html { scroll-behavior: auto; }
+}
+
+/* responsivo */
+@media (max-width: 1024px) {
+  .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 960px) {
+  .hero .wrap { grid-template-columns: 1fr; gap: 0; min-height: 0; }
+  .hero-fig { order: -1; height: min(52vh, 460px); margin-top: 24px; }
+  .hero-fig img { -webkit-mask-image: linear-gradient(#000 78%, transparent 100%); mask-image: linear-gradient(#000 78%, transparent 100%); }
+  .ring { width: min(380px, 86%); bottom: 16%; }
+  .hero-copy { padding: 8px 0 60px; }
+  .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .story .wrap, .how-head { grid-template-columns: 1fr; gap: 40px; }
+  .sec-head { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .float { display: block; }
+  footer .wrap { grid-template-columns: 1fr; padding-bottom: calc(110px + env(safe-area-inset-bottom, 0px)); }
+  .legal { text-align: left; }
+}
+@media (max-width: 640px) {
+  .top-cta span { display: none; }
+  .top-cta { padding: 10px 12px; }
+  h1 { font-size: clamp(2.1rem, 10vw, 2.9rem); }
+  section { padding: 80px 0; }
+  .steps { grid-template-columns: 1fr; }
+  .gallery { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 12px; margin-inline: -20px; padding: 0 20px 6px; scrollbar-width: none; }
+  .gallery::-webkit-scrollbar { display: none; }
+  .gallery .shot { flex: 0 0 86%; scroll-snap-align: center; }
+  .swipe { display: block; }
+  .final .wrap { padding: 96px 0; }
+  .final::after { background: linear-gradient(180deg, rgba(20, 20, 20, .55) 0%, rgba(20, 20, 20, .9) 70%); }
+  .hero .btn { width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top">Marlon <span>Júnior</span></a>
+    <a class="top-cta" href="https://wa.me/5561995746311?text=Oi%20Marlon%2C%20quero%20saber%20mais%20sobre%20o%20Acompanhamento%20Ess%C3%AAncia." target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.47-2.39-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.88 1.21 3.07.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.7.63.71.22 1.36.19 1.87.12.57-.09 1.76-.72 2-1.42.25-.69.25-1.29.18-1.41-.08-.12-.27-.2-.57-.35m-5.42 7.4h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.89-9.88 2.64 0 5.12 1.03 6.99 2.9a9.82 9.82 0 0 1 2.89 6.99c0 5.45-4.44 9.88-9.88 9.88m8.41-18.3A11.82 11.82 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 0 0 5.68 1.45h.01c6.55 0 11.89-5.34 11.89-11.89a11.82 11.82 0 0 0-3.48-8.41Z"/></svg>
+      <span>WhatsApp</span>
+    </a>
+  </div>
+</header>
+
+<main id="top">
+
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-copy">
+      <p class="eyebrow">Nutricionista · CRN 16533 · Online e presencial</p>
+      <h1>Você não falhou nas dietas. Você só nunca teve o <em>acompanhamento certo.</em></h1>
+      <p class="lead">Você merece um acompanhamento feito pra você: para o seu corpo, sua rotina e sua vida. É exatamente isso que você vai encontrar no <strong>Acompanhamento Essência</strong>.</p>
+      <a class="btn" href="https://wa.me/5561995746311?text=Oi%20Marlon%2C%20quero%20saber%20mais%20sobre%20o%20Acompanhamento%20Ess%C3%AAncia." target="_blank" rel="noopener">
+        Começar meu acompanhamento
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <ul class="proof">
+        <li><b>+2 mil</b> pacientes atendidos</li>
+        <li><b>25 mil</b> no Instagram</li>
+        <li>Online e presencial em <b>Brasília</b></li>
+      </ul>
+    </div>
+    <figure class="hero-fig">
+      <div class="ring" aria-hidden="true"></div>
+      <img src="assets/marlon-hero.png" alt="Marlon Júnior, nutricionista, sorrindo de camiseta preta" width="724" height="1086" fetchpriority="high">
+    </figure>
+  </div>
+</section>
+
+<section class="story alt" id="historia">
+  <div class="wrap">
+    <figure class="rv">
+      <img src="assets/marlon-antes-depois.jpg" alt="Marlon Júnior antes e depois do próprio emagrecimento" width="864" height="1080" loading="lazy">
+      <figcaption><span>Eu, antes</span><span>Eu, hoje</span></figcaption>
+    </figure>
+    <div>
+      <p class="label rv">Minha história</p>
+      <h2 class="rv">Eu já estive <em>desse lado.</em></h2>
+      <p class="lead rv">Eu já fui obeso. Sei o que é tentar, recomeçar e sentir que nada dura.</p>
+      <p class="lead rv">Hoje eu uso o que aprendi no meu processo e na nutrição com cada paciente: um plano que cabe na vida real e alguém do lado para ajustar o caminho toda semana.</p>
+      <p class="sign rv">Nutrição aplicada à vida real.</p>
+    </div>
+  </div>
+</section>
+
+<section class="results" id="resultados">
+  <div class="wrap">
+    <p class="label rv">Resultados</p>
+    <div class="sec-head">
+      <h2 class="rv">Resultados reais de quem teve o <em>acompanhamento certo.</em></h2>
+      <p class="rv">Pessoas comuns, com rotina comum, que pararam de tentar sozinhas.</p>
+    </div>
+    <div class="gallery">
+      <figure class="shot rv"><img src="assets/resultados/resultado-1.jpg" alt="Antes e depois de paciente do Acompanhamento Essência" width="1206" height="1000" loading="lazy"><figcaption><span>Antes</span><span>Depois</span></figcaption></figure>
+      <figure class="shot rv"><img src="assets/resultados/resultado-2.jpg" alt="Antes e depois de paciente do Acompanhamento Essência" width="1206" height="1000" loading="lazy"><figcaption><span>Antes</span><span>Depois</span></figcaption></figure>
+      <figure class="shot rv"><img src="assets/resultados/resultado-3.jpg" alt="Antes e depois de paciente do Acompanhamento Essência" width="1206" height="1000" loading="lazy"><figcaption><span>Antes</span><span>Depois</span></figcaption></figure>
+      <figure class="shot rv"><img src="assets/resultados/resultado-4.jpg" alt="Antes e depois de paciente do Acompanhamento Essência" width="1206" height="1000" loading="lazy"><figcaption><span>Antes</span><span>Depois</span></figcaption></figure>
+      <figure class="shot rv"><img src="assets/resultados/resultado-5.jpg" alt="Antes e depois de paciente do Acompanhamento Essência" width="1206" height="1000" loading="lazy"><figcaption><span>Antes</span><span>Depois</span></figcaption></figure>
+      <figure class="shot rv"><img src="assets/resultados/resultado-6.jpg" alt="Antes e depois de paciente do Acompanhamento Essência" width="1206" height="1000" loading="lazy"><figcaption><span>Antes</span><span>Depois</span></figcaption></figure>
+    </div>
+    <p class="swipe">Arraste para o lado para ver mais resultados</p>
+    <div class="after-gallery rv">
+      <p>Cada resultado aqui é de alguém que já tinha tentado antes. A diferença foi o acompanhamento.</p>
+      <a class="btn" href="https://wa.me/5561995746311?text=Oi%20Marlon%2C%20quero%20saber%20mais%20sobre%20o%20Acompanhamento%20Ess%C3%AAncia." target="_blank" rel="noopener">Quero o meu resultado
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="how alt" id="como-funciona">
+  <div class="wrap">
+    <div class="how-head">
+      <div>
+        <p class="label rv">Acompanhamento Essência</p>
+        <h2 class="rv">Emagrecimento para quem já <em>tentou de tudo.</em></h2>
+      </div>
+      <p class="lead rv">Dieta genérica não respeita quem você é. O Acompanhamento Essência começa por você e só depois chega no prato.</p>
+    </div>
+    <ol class="steps">
+      <li class="rv"><h3>Primeira consulta completa</h3><p>Cerca de 1h30 para mapear sua rotina, seu histórico e onde você costuma travar.</p></li>
+      <li class="rv"><h3>Plano que cabe na sua semana</h3><p>Estratégico e flexível, com espaço para o fim de semana e para os dias corridos.</p></li>
+      <li class="rv"><h3>Ajuste toda semana</h3><p>Check-ins semanais e acesso direto a mim pelo WhatsApp entre as consultas.</p></li>
+      <li class="rv"><h3>Comunidade exclusiva</h3><p>Um grupo só de pacientes, com gente passando pelo mesmo processo que você.</p></li>
+    </ol>
+    <div class="how-foot rv">
+      <p>Planos de 30 a 180 dias · Online ou presencial · PIX ou cartão parcelado</p>
+      <a class="btn" href="https://wa.me/5561995746311?text=Oi%20Marlon%2C%20quero%20saber%20mais%20sobre%20o%20Acompanhamento%20Ess%C3%AAncia." target="_blank" rel="noopener">Quero saber os planos
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="final">
+  <img src="assets/marlon-corrida.jpg" alt="" loading="lazy">
+  <div class="wrap">
+    <h2 class="rv">Chega de recomeçar <em>toda segunda.</em></h2>
+    <p class="lead rv">Me chama no WhatsApp, me conta um pouco da sua rotina, e a gente vê juntos se o acompanhamento faz sentido pra você agora.</p>
+    <a class="btn rv" href="https://wa.me/5561995746311?text=Oi%20Marlon%2C%20quero%20saber%20mais%20sobre%20o%20Acompanhamento%20Ess%C3%AAncia." target="_blank" rel="noopener">Falar com o Marlon
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <nav class="foot-links" aria-label="Links">
+      <a href="https://www.instagram.com/marlonjuniornutri/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.tiktok.com/@marlonjuniornutri" target="_blank" rel="noopener">TikTok</a>
+      <a href="https://wa.me/5561995746311?text=Oi%20Marlon%2C%20quero%20falar%20sobre%20palestras%20e%20parcerias." target="_blank" rel="noopener">Palestras e parcerias</a>
+      <a href="mailto:marlonjuniornutri@gmail.com">marlonjuniornutri@gmail.com</a>
+    </nav>
+    <div class="legal">© <span id="y">2026</span> Marlon Júnior · CRN 16533<br>Marlon Junior Nutricionista LTDA · CNPJ 59.261.253/0001-61</div>
+  </div>
+</footer>
+
+<div class="float" aria-hidden="true">
+  <a class="btn" href="https://wa.me/5561995746311?text=Oi%20Marlon%2C%20quero%20saber%20mais%20sobre%20o%20Acompanhamento%20Ess%C3%AAncia." target="_blank" rel="noopener" tabindex="-1">Falar no WhatsApp</a>
+</div>
+
+<script>
+(function () {
+  document.documentElement.classList.add('js');
+  var y = document.getElementById('y'); if (y) y.textContent = new Date().getFullYear();
+  if (!('IntersectionObserver' in window)) { document.querySelectorAll('.rv').forEach(function (el) { el.classList.add('in'); }); return; }
+  var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { threshold: .1, rootMargin: '0px 0px -5% 0px' });
+  document.querySelectorAll('.rv').forEach(function (el) { io.observe(el); });
+  var hero = document.querySelector('.hero'), fl = document.querySelector('.float');
+  new IntersectionObserver(function (en) { var on = !en[0].isIntersecting; fl.classList.toggle('on', on); fl.setAttribute('aria-hidden', on ? 'false' : 'true'); fl.querySelector('a').tabIndex = on ? 0 : -1; }, { threshold: .05 }).observe(hero);
+})();
+</script>
+</body>
+</html>
