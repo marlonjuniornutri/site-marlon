@@ -170,7 +170,8 @@ input[aria-invalid="true"] { border-color: var(--danger); }
     treino: ['Nenhuma', '1 a 2', '3 a 5', '6 a 7'],
     momento: ['No fim de semana', 'À noite', 'Em dias de ansiedade, cansaço ou estresse', 'Quando a rotina aperta', 'Em festas, eventos e encontros', 'Quando fico muitas horas sem comer', 'Quando como fora ou peço delivery', 'Beliscando ao longo do dia', 'Outro'],
     deslize: ['Volto na próxima refeição', 'Deixo pra recomeçar na segunda', 'Tento compensar comendo menos ou treinando mais', 'Largo tudo por um tempo'],
-    acompanhamento: ['Faço', 'Já fiz, hoje não', 'Nunca fiz']
+    acompanhamento: ['Faço', 'Já fiz, hoje não', 'Nunca fiz'],
+    interesse: ['Sim, quero que a equipe do Marlon me chame', 'Quero saber mais antes de decidir', 'Agora não']
   };
 
   // Telas em que a última opção é "Outro" e abre um campo para a pessoa detalhar
@@ -183,7 +184,8 @@ input[aria-invalid="true"] { border-color: var(--danger); }
     [1.55, 1.725, 1.725, 1.9]
   ];
 
-  var ORDER = ['abertura', 'nome', 'objetivo', 'sexo', 'medidas', 'rotina', 'treino', 'momento', 'deslize', 'acompanhamento', 'contato', 'resultado'];
+  var ORDER = ['abertura', 'nome', 'objetivo', 'sexo', 'medidas', 'rotina', 'treino', 'momento', 'deslize', 'acompanhamento', 'interesse', 'contato', 'resultado'];
+  var INTERESSE_PLANILHA = ['Sim', 'Quer saber mais', 'Agora não'];
 
   var PERFIS = {
     compensacao: {
@@ -263,7 +265,7 @@ input[aria-invalid="true"] { border-color: var(--danger); }
 
   function backBtn() { return '<div><button type="button" class="back" data-back>← Voltar</button></div>'; }
 
-  function choice(key, pergunta, extraTop) {
+  function choice(key, pergunta, extraTop, sub) {
     return function () {
       var opts = OPT[key].map(function (o, i) {
         return '<button type="button" class="opt" data-i="' + i + '" aria-pressed="' + (A[key] === i) + '">' + esc(o) + '</button>';
@@ -275,7 +277,7 @@ input[aria-invalid="true"] { border-color: var(--danger); }
           '<textarea id="in-outro-' + key + '" rows="3" maxlength="300">' + esc(A[key + 'Outro'] || '') + '</textarea>' +
           '<p class="error" data-outro-err></p><button type="button" class="btn block" data-outro-go>Continuar</button></div>';
       }
-      return backBtn() + (extraTop || '') + '<h2>' + pergunta() + '</h2><div class="options" role="group">' + opts + '</div>' + outro;
+      return backBtn() + (extraTop || '') + '<h2>' + pergunta() + '</h2>' + (sub ? '<p class="body-text">' + sub + '</p>' : '') + '<div class="options" role="group">' + opts + '</div>' + outro;
     };
   }
 
@@ -311,7 +313,7 @@ input[aria-invalid="true"] { border-color: var(--danger); }
   var SCREENS = {
     abertura: function () {
       return '<h1>Quanto o seu corpo gasta por dia?</h1>' +
-        '<p class="body-text">Olha, essa conta leva uns 2 minutos. No final, você recebe uma estimativa de quanto seu corpo gasta por dia e uma leitura do que pode estar travando seu resultado. Antes de mostrar, vou pedir seu WhatsApp pra gente continuar essa conversa, se fizer sentido pra você.</p>' +
+        '<p class="body-text">Olha, essa conta leva uns 2 minutos. No final, você recebe uma estimativa de quanto seu corpo gasta por dia e uma leitura do que pode estar travando seu resultado. Logo no começo eu peço seu nome e seu WhatsApp, pra gente poder continuar essa conversa depois, se fizer sentido pra você.</p>' +
         '<p class="lead">Marlon Junior · Nutricionista · CRN1 16533</p>' +
         '<div><button type="button" class="btn block" id="start">Começar</button></div>';
     },
@@ -319,6 +321,8 @@ input[aria-invalid="true"] { border-color: var(--danger); }
       return backBtn() + '<h2>Primeiro, como posso te chamar?</h2>' +
         '<form id="f" novalidate><div class="field full"><label class="lbl" for="in-nome">Seu nome</label>' +
         '<input type="text" id="in-nome" autocomplete="given-name" maxlength="40" value="' + esc(A.nome || '') + '"></div>' +
+        '<div class="field full"><label class="lbl" for="in-whats">WhatsApp com DDD</label><input type="tel" id="in-whats" autocomplete="tel-national" inputmode="tel" placeholder="(61) 99999-9999" value="' + esc(A.whats || '') + '"></div>' +
+        '<p class="small-link">Seu número fica só comigo e com a minha equipe.</p>' +
         '<p class="error" id="err"></p><button type="submit" class="btn block">Continuar</button></form>';
     },
     objetivo: choice('objetivo', function () { return 'Prazer, ' + nome() + '. O que você mais quer resolver agora?'; }),
@@ -337,16 +341,16 @@ input[aria-invalid="true"] { border-color: var(--danger); }
       '<p class="bridge">Pronto, a conta já tá feita. Agora vou te perguntar o que ela não consegue medir.</p>'),
     deslize: choice('deslize', function () { return 'E quando isso acontece, o que vem depois?'; }),
     acompanhamento: choice('acompanhamento', function () { return 'Hoje você faz acompanhamento com nutricionista?'; }),
+    interesse: choice('interesse', function () { return nome() + ', você gostaria de conhecer o Acompanhamento Essência?'; }, '',
+      'É o meu acompanhamento individual: um plano feito pra sua rotina, check-ins toda semana e contato direto comigo pelo WhatsApp.'),
     contato: function () {
-      var faz = A.acompanhamento === 0;
-      var consent = faz
+      var semContato = A.acompanhamento === 0 || A.interesse === 2;
+      var consent = semContato
         ? 'Autorizo o uso das minhas respostas para gerar este resultado.'
-        : 'Autorizo o uso das minhas respostas para gerar este resultado e o contato do Marlon pelo WhatsApp.';
+        : 'Autorizo o uso das minhas respostas para gerar este resultado e o contato da equipe do Marlon pelo WhatsApp.';
       return backBtn() +
         '<h2>' + nome() + ', sua estimativa tá pronta.</h2>' +
-        (faz ? '' : '<p class="body-text">Me passa seu WhatsApp pra gente continuar essa conversa, se fizer sentido pra você.</p>') +
         '<form id="f" novalidate>' +
-        (faz ? '' : '<div class="field full"><label class="lbl" for="in-whats">WhatsApp com DDD</label><input type="tel" id="in-whats" autocomplete="tel-national" inputmode="tel" placeholder="(61) 99999-9999" value="' + esc(A.whats || '') + '"></div>') +
         '<label class="check" for="in-consent"><input type="checkbox" id="in-consent"' + (A.consent ? ' checked' : '') + '><span>' + consent + '</span></label>' +
         '<p class="small-link"><a href="/privacidade/" target="_blank" rel="noopener">Política de privacidade</a></p>' +
         '<p class="error" id="err"></p><button type="submit" class="btn block">Ver meu resultado</button></form>';
@@ -431,9 +435,15 @@ input[aria-invalid="true"] { border-color: var(--danger); }
       texto: 'Leva esse resultado pra sua próxima consulta. Ele pode ajudar vocês a ajustar o plano.',
       botao: '<a class="btn block" href="' + INSTAGRAM + '" target="_blank" rel="noopener">Seguir no Instagram</a>'
     };
-    var texto = ac === 1
-      ? 'Se você já teve acompanhamento e parou, vale entender o que não funcionou antes de começar de novo. Se fizer sentido, me chama no WhatsApp e me conta como foi.'
-      : 'Se isso fez sentido pra você, me chama no WhatsApp e me conta um pouco da sua rotina. A gente vê se o acompanhamento combina com o seu momento.';
+    if (A.interesse === 2) return {
+      texto: 'Tudo bem. Quando fizer sentido pra você, é só me chamar. Enquanto isso, tem bastante conteúdo sobre isso no meu Instagram.',
+      botao: '<a class="btn block" href="' + INSTAGRAM + '" target="_blank" rel="noopener">Seguir no Instagram</a>'
+    };
+    var texto = A.interesse === 0
+      ? 'Combinado, ' + nome() + '. Alguém da minha equipe vai te chamar no WhatsApp pra te contar como funciona o acompanhamento. Se quiser adiantar, pode me chamar agora.'
+      : ac === 1
+        ? 'Se você já teve acompanhamento e parou, vale entender o que não funcionou antes de começar de novo. Se fizer sentido, me chama no WhatsApp e me conta como foi.'
+        : 'Se isso fez sentido pra você, me chama no WhatsApp e me conta um pouco da sua rotina. A gente vê se o acompanhamento combina com o seu momento.';
     return { texto: texto, botao: '<a class="btn block" href="' + waLink(p) + '" target="_blank" rel="noopener">Falar com o Marlon</a>' };
   }
 
@@ -444,7 +454,8 @@ input[aria-invalid="true"] { border-color: var(--danger); }
       nome: A.nome, whatsapp: A.whats || '', objetivo: OPT.objetivo[A.objetivo], sexo: OPT.sexo[A.sexo],
       idade: A.idade, peso: A.peso, altura: A.altura, rotina: OPT.rotina[A.rotina], treino: OPT.treino[A.treino],
       momento: OPT.momento[A.momento], momentoOutro: A.momento === OPT.momento.length - 1 ? (A.momentoOutro || '') : '',
-      deslize: OPT.deslize[A.deslize], acompanhamento: OPT.acompanhamento[A.acompanhamento], perfil: PERFIS[perfil(A)].nome,
+      deslize: OPT.deslize[A.deslize], acompanhamento: OPT.acompanhamento[A.acompanhamento],
+      interesse: A.acompanhamento === 0 ? '' : (INTERESSE_PLANILHA[A.interesse] || ''), perfil: PERFIS[perfil(A)].nome,
       tmb: Math.round(c.tmb), fator: c.fator, gasto: Math.round(c.get), faixaMin: c.min, faixaMax: c.max, consentimento: true
     };
     try {
@@ -452,16 +463,32 @@ input[aria-invalid="true"] { border-color: var(--danger); }
     } catch (e) {}
   }
 
+  function maskWhats(w) {
+    w.addEventListener('input', function () {
+      var d = w.value.replace(/\D/g, '').slice(0, 11);
+      var out = d;
+      if (d.length > 2) out = '(' + d.slice(0, 2) + ') ' + d.slice(2);
+      if (d.length > 7) out = '(' + d.slice(0, 2) + ') ' + d.slice(2, d.length - 4) + '-' + d.slice(-4);
+      w.value = out;
+    });
+  }
+
   function restart() { A = {}; history = []; go('abertura', false); }
 
   var BIND = {
     abertura: function (s) { s.querySelector('#start').addEventListener('click', function () { go('nome'); }); },
     nome: function (s) {
+      var w = s.querySelector('#in-whats');
+      maskWhats(w);
       s.querySelector('#f').addEventListener('submit', function (e) {
         e.preventDefault();
+        var err = s.querySelector('#err');
+        s.querySelectorAll('input').forEach(function (i) { i.removeAttribute('aria-invalid'); });
         var v = s.querySelector('#in-nome').value.trim();
-        if (v.length < 2) { s.querySelector('#err').textContent = 'Escreve seu nome pra eu saber como te chamar.'; s.querySelector('#in-nome').setAttribute('aria-invalid', 'true'); return; }
-        A.nome = v; go('objetivo');
+        if (v.length < 2) { err.textContent = 'Escreve seu nome pra eu saber como te chamar.'; s.querySelector('#in-nome').setAttribute('aria-invalid', 'true'); return; }
+        var d = w.value.replace(/\D/g, '');
+        if (d.length < 10 || d.length > 11) { err.textContent = 'Confere o WhatsApp: DDD e mais 8 ou 9 dígitos.'; w.setAttribute('aria-invalid', 'true'); return; }
+        A.nome = v; A.whats = w.value; go('objetivo');
       });
     },
     objetivo: bindChoice('objetivo', 'sexo'),
@@ -487,24 +514,12 @@ input[aria-invalid="true"] { border-color: var(--danger); }
     treino: bindChoice('treino', 'momento'),
     momento: bindChoice('momento', 'deslize'),
     deslize: bindChoice('deslize', 'acompanhamento'),
-    acompanhamento: bindChoice('acompanhamento', 'contato'),
+    acompanhamento: bindChoice('acompanhamento', function () { return A.acompanhamento === 0 ? 'contato' : 'interesse'; }),
+    interesse: bindChoice('interesse', 'contato'),
     contato: function (s) {
-      var w = s.querySelector('#in-whats');
-      if (w) w.addEventListener('input', function () {
-        var d = w.value.replace(/\D/g, '').slice(0, 11);
-        var out = d;
-        if (d.length > 2) out = '(' + d.slice(0, 2) + ') ' + d.slice(2);
-        if (d.length > 7) out = '(' + d.slice(0, 2) + ') ' + d.slice(2, d.length - 4) + '-' + d.slice(-4);
-        w.value = out;
-      });
       s.querySelector('#f').addEventListener('submit', function (e) {
         e.preventDefault();
         var err = s.querySelector('#err');
-        if (w) {
-          var d = w.value.replace(/\D/g, '');
-          if (d.length < 10 || d.length > 11) { w.setAttribute('aria-invalid', 'true'); err.textContent = 'Confere o número: DDD e mais 8 ou 9 dígitos.'; return; }
-          A.whats = w.value;
-        }
         if (!s.querySelector('#in-consent').checked) { err.textContent = 'Pra mostrar o resultado, preciso da sua autorização aqui em cima.'; return; }
         A.consent = true;
         enviar();
